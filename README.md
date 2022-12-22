@@ -16,7 +16,7 @@ Make sure you are in the directory that has the python files, then run the follo
 ```bash
 python3 standalone.py
 ```
-
+The script will take care of all the set up (security group and standalone instance), then once all is set up and ready it will benchmark the standalone and SCP the benchmark results file to the local machine. Afterwards, the script will end by terminating the standalone and deleting the security group.
 ## Set up and benchmark cluster
 
 In the process...
