@@ -1,3 +1,4 @@
+import sys
 import time
 import boto3
 import paramiko
@@ -8,19 +9,25 @@ from securityGroup import *
 
 def main():
     
+    if len(sys.argv) < 2:
+        print('ERROR! Make sure the command has the (172.31.16.0/20) subnet, like this => python3 standalone.py "subnet-XXXXXXXXXXXXXXXXX"')
+        exit()
+        
+    subnet_id = str(sys.argv[1])
+    
     ec2_client = boto3.client('ec2',
-        aws_access_key_id="ASIAQJSMAGZD5GMZYTQH",
-        aws_secret_access_key="nlS8ywQoW9gi9Lv3sS/a73PrekpKKjLGw6LTFZ5B",
-        aws_session_token="FwoGZXIvYXdzECoaDDdAdzGNl7uD+g7o6SLEAaRQSb18CxuuyfaMORI5tkibOzkgxHRXk8WkklpuyuKq/zB+K2xKZuUxeC9w2M+j4XazVPSHUoDVh+sm78qZmQgECslXZ52ml8M3n15QBOkyV+vJfGxbxDCsH/108t0fE+uUtnblusX+ZokuDcvi0ovObyBu/+VRt5U111ZANH1oGpqiVN4VYydzjR3dZ9WYqQgRf3hgvQu7HL0L1idxbmLFVLbGKzAZShybGCrxGY88MonHOpRbPMnTQQWl+4M3h991yHAoy+r+nAYyLSCek+6XDf4LJqtPYk37qyLeqARzOw9YG21CCR2+v/OrjmHRt6K76d3ppet08w==",
+        aws_access_key_id="ASIAQJSMAGZDRYRKWN76",
+        aws_secret_access_key="G2fBywh/h3QJbPQtQCdYAqN85FHilxLVN9bRblNv",
+        aws_session_token="FwoGZXIvYXdzEIb//////////wEaDGi54Fao1dIxwgo7fCLEAeRrjzjFcxRDvnAUdDu6SycN4TqwDCqzHiZUbv3k/CnHiaHu7LLYUKD1rJErGgvq5+g8EZxhr2UbK9KTbm6/4k05p8PxuOlu7V2wM9f/BvlhiY4NUn3SUZ2P32uCxWWzqzGDK625zZwIJSU0O9dnlj2SsP2mtJ8FVt7FdhaqOryaw8ajuO09ZBtJLYghyAgjQ8tavc5sTcO12Gixmw0quhRw98T3NAd6CCH06Y9fuAmxH0v5TMcr6YcZgJhiQweJGeeYbIEopPaSnQYyLb9QRJFLKRBhDRLFj8LeD2/gD8MyQi5ePlSJBRk/x2Us+KcuikAlLnmbFturfw==",
         region_name= 'us-east-1'
         )
 
     ec2_resource = boto3.resource('ec2',
-        aws_access_key_id="ASIAQJSMAGZD5GMZYTQH",
-        aws_secret_access_key="nlS8ywQoW9gi9Lv3sS/a73PrekpKKjLGw6LTFZ5B",
-        aws_session_token="FwoGZXIvYXdzECoaDDdAdzGNl7uD+g7o6SLEAaRQSb18CxuuyfaMORI5tkibOzkgxHRXk8WkklpuyuKq/zB+K2xKZuUxeC9w2M+j4XazVPSHUoDVh+sm78qZmQgECslXZ52ml8M3n15QBOkyV+vJfGxbxDCsH/108t0fE+uUtnblusX+ZokuDcvi0ovObyBu/+VRt5U111ZANH1oGpqiVN4VYydzjR3dZ9WYqQgRf3hgvQu7HL0L1idxbmLFVLbGKzAZShybGCrxGY88MonHOpRbPMnTQQWl+4M3h991yHAoy+r+nAYyLSCek+6XDf4LJqtPYk37qyLeqARzOw9YG21CCR2+v/OrjmHRt6K76d3ppet08w==",
-        region_name= 'us-east-1'
-        )
+            aws_access_key_id="ASIAQJSMAGZDRYRKWN76",
+            aws_secret_access_key="G2fBywh/h3QJbPQtQCdYAqN85FHilxLVN9bRblNv",
+            aws_session_token="FwoGZXIvYXdzEIb//////////wEaDGi54Fao1dIxwgo7fCLEAeRrjzjFcxRDvnAUdDu6SycN4TqwDCqzHiZUbv3k/CnHiaHu7LLYUKD1rJErGgvq5+g8EZxhr2UbK9KTbm6/4k05p8PxuOlu7V2wM9f/BvlhiY4NUn3SUZ2P32uCxWWzqzGDK625zZwIJSU0O9dnlj2SsP2mtJ8FVt7FdhaqOryaw8ajuO09ZBtJLYghyAgjQ8tavc5sTcO12Gixmw0quhRw98T3NAd6CCH06Y9fuAmxH0v5TMcr6YcZgJhiQweJGeeYbIEopPaSnQYyLb9QRJFLKRBhDRLFj8LeD2/gD8MyQi5ePlSJBRk/x2Us+KcuikAlLnmbFturfw==",
+            region_name= 'us-east-1'
+            )
     
     
     #get vpc_id
@@ -31,7 +38,7 @@ def main():
     time.sleep(10)
 
     # Create EC2 instance
-    instance = create_standalone_instance(ec2_resource, security_group['GroupId'])
+    instance = create_standalone_instance(ec2_resource, security_group['GroupId'], subnet_id)
 
     print("Waiting for standalone instance to be ok...")
     waiter = ec2_client.get_waiter('instance_status_ok')
@@ -58,7 +65,6 @@ def main():
         "sudo sysbench oltp_read_write --table-size=100000 --mysql-db=sakila --db-driver=mysql --mysql-user=root cleanup"
     ]
     for command in commands:
-        # print("Executing "+ command)
         stdin , stdout, stderr = SSHClient.exec_command(command)
         print(stdout.read())
         print(stderr.read())
@@ -75,4 +81,3 @@ def main():
 
 
 main()
-
