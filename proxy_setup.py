@@ -1,3 +1,4 @@
+import subprocess
 import sys
 import time
 import boto3
@@ -35,6 +36,13 @@ def main():
     time.sleep(180)
     
     print("Ready!")
+
+    # Get public IP
+    reservations = ec2_client.describe_instances(InstanceIds=[instance[0].id])['Reservations']
+    ip = reservations[0]["Instances"][0].get('PublicIpAddress')
+
+    print("SCP the labsuser.pem to the proxy...")
+    subprocess.call(['scp', '-o','StrictHostKeyChecking=no', '-o', 'UserKnownHostsFile=/dev/null', '-i', 'labsuser.pem', 'labsuser.pem',"ubuntu@" + str(ip) + ":labsuser.pem"])
     
     destroy = False
     while destroy == False:
