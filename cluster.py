@@ -86,8 +86,6 @@ def main():
         else:
             continue
     
-    # https://www.digitalocean.com/community/tutorials/how-to-create-a-multi-node-mysql-cluster-on-ubuntu-18-04
-    # https://gist.github.com/ziadoz/dc935a0167c68fc23b4f35ee8593125f
     
     
 main()
