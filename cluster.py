@@ -15,19 +15,9 @@ def main():
         
     subnet_id = str(sys.argv[1])
     
-    ec2_client = boto3.client('ec2',
-        aws_access_key_id="ASIAQJSMAGZDRYRKWN76",
-        aws_secret_access_key="G2fBywh/h3QJbPQtQCdYAqN85FHilxLVN9bRblNv",
-        aws_session_token="FwoGZXIvYXdzEIb//////////wEaDGi54Fao1dIxwgo7fCLEAeRrjzjFcxRDvnAUdDu6SycN4TqwDCqzHiZUbv3k/CnHiaHu7LLYUKD1rJErGgvq5+g8EZxhr2UbK9KTbm6/4k05p8PxuOlu7V2wM9f/BvlhiY4NUn3SUZ2P32uCxWWzqzGDK625zZwIJSU0O9dnlj2SsP2mtJ8FVt7FdhaqOryaw8ajuO09ZBtJLYghyAgjQ8tavc5sTcO12Gixmw0quhRw98T3NAd6CCH06Y9fuAmxH0v5TMcr6YcZgJhiQweJGeeYbIEopPaSnQYyLb9QRJFLKRBhDRLFj8LeD2/gD8MyQi5ePlSJBRk/x2Us+KcuikAlLnmbFturfw==",
-        region_name= 'us-east-1'
-        )
+    ec2_client = boto3.client("ec2", region_name="us-east-1")
 
-    ec2_resource = boto3.resource('ec2',
-            aws_access_key_id="ASIAQJSMAGZDRYRKWN76",
-            aws_secret_access_key="G2fBywh/h3QJbPQtQCdYAqN85FHilxLVN9bRblNv",
-            aws_session_token="FwoGZXIvYXdzEIb//////////wEaDGi54Fao1dIxwgo7fCLEAeRrjzjFcxRDvnAUdDu6SycN4TqwDCqzHiZUbv3k/CnHiaHu7LLYUKD1rJErGgvq5+g8EZxhr2UbK9KTbm6/4k05p8PxuOlu7V2wM9f/BvlhiY4NUn3SUZ2P32uCxWWzqzGDK625zZwIJSU0O9dnlj2SsP2mtJ8FVt7FdhaqOryaw8ajuO09ZBtJLYghyAgjQ8tavc5sTcO12Gixmw0quhRw98T3NAd6CCH06Y9fuAmxH0v5TMcr6YcZgJhiQweJGeeYbIEopPaSnQYyLb9QRJFLKRBhDRLFj8LeD2/gD8MyQi5ePlSJBRk/x2Us+KcuikAlLnmbFturfw==",
-            region_name= 'us-east-1'
-            )
+    ec2_resource = boto3.resource("ec2", region_name="us-east-1")
     
     #get vpc_id
     vpc_id = ec2_client.describe_vpcs().get('Vpcs', [{}])[0].get('VpcId', '')
