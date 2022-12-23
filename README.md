@@ -25,7 +25,7 @@ The whole setting up of the MYSQL cluster has been heavily based on the followin
 Make sure you are in the directory that has the python files, then run the following command:
 
 ```bash
-python3 .\cluster.py "subnet-XXXXXXXXXXXXXXXXX"
+python3 cluster.py "subnet-XXXXXXXXXXXXXXXXX"
 ```
 Make sure to put the (172.31.16.0/20) subnet in double quotes as argument in the command since our master and nodes will have private up addresses from this subnet.  <br /> <br />
 The script will take care of all the set up (security group and cluster instances), then once all is set up and ready it will benchmark the cluster and SCP the benchmark results file to the local machine. <br /> <br />
@@ -39,7 +39,7 @@ Therefore, if you type 'terminate' in the terminal and enter, the script will te
 
 To test the proxy, you should run the cluster first with the command above, and not type the 'terminate' in the terminate once the message comes up. That way we will have the master and its 3 slaves running. Once that done, run the following command to set up the proxy instance:
 ```bash
-python3 .\proxy_setup.py "subnet-XXXXXXXXXXXXXXXXX"
+python3 proxy_setup.py "subnet-XXXXXXXXXXXXXXXXX"
 ```
 Again, make sure to put the (172.31.16.0/20) subnet in double quotes as argument in the command as we want the proxy to be in same subnet as the cluster.  <br /> <br />
 
