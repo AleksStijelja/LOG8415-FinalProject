@@ -10,7 +10,7 @@ You just need to make sure you have the following dependencies:
 
 Make sure you have AWS CLI installed and that you update your AWS credentials. <br />
 
-Also, take your "labsuser.pem" key and replace the "labsuser.pem" key from the git repo. Obviously don't commit and push the change. We just need your "labsuser.pem" key so we can ssh into instances and scp files as well.
+Also, take your "labsuser.pem" key and replace the "labsuser.pem" key from the git repo. Obviously don't commit and push the change. We just need your "labsuser.pem" key so we can ssh into instances and scp files as well. Make sure that your "labsuser.pem" key is chmod 400.
 
 ## Set up and benchmark standalone
 Make sure you are in the directory that has the python files, then run the following command:
